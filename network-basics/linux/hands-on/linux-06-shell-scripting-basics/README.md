@@ -80,7 +80,7 @@ pwd # This is an inline comment
 - Let's see how to use HereDoc.
 
 ```bash
-cat << EOF
+https://file+.vscode-resource.vscode-webview.net/c%3A/Users/pc/OneDrive/Masa%C3%BCst%C3%BC/clarusway-aws-10-22/clarusway-aws-10-22/linux/hands-on/linux-06-shell-scripting-basics/#cat << EOF
 Welcome to the Linux Lessons.
 This lesson is about the shell scripting
 EOF
@@ -159,7 +159,7 @@ KEY_1?=value1
 - Create a new file and name it `variable.sh`.
 
 ```bash
-#!/bin/bash
+ii#!/bin/bash
 NAME=Joe
 echo $NAME
 ```

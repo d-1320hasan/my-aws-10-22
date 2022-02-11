@@ -49,10 +49,11 @@ instructor:
 
 #Multiple lines values
 
-example1: |  # Keeps the block
+example1: |
   Guile M.
   Solutions Architect
   Clarusway LLC.
+
 example2: > # This text will be a sentence
   This
   text

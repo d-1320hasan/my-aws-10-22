@@ -11,7 +11,7 @@ Resources:
       InstanceType: t2.micro
       KeyName: firstkey # Please use your own key name without .pem
       SecurityGroups: 
-        - cfn-sec-group
+        - cfn-sec-group2
       Tags:
         - Key: Name
           Value: Cfn-Instance
