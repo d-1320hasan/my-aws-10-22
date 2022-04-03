@@ -7,23 +7,33 @@ Purpose of the this hands-on training is to give the students basic knowledge of
 At the end of the this hands-on training, students will be able to;
 
 - create and configure a load balancer with Target Group.
+
 - create and configure Auto Scaling Group with Launch Template.
+
 - add policy to Auto Scaling Group.
+
 - add Cloudwatch alarm.
 
 ## Outline
 
 - Part 1 - Create Security Group
+
 - Part 2 - Create Target Group
+
 - Part 3 - Create Application Load Balancer
+
 - Part 4 - Create Launch Template
+
 - Part 5 - Create Auto Scaling Group
+
 - Part 6 - Create Auto Scaling Policy
 
 ## Part 1 - Create a Security Group
 
 - Open the Amazon EC2 console at https://console.aws.amazon.com/ec2/.
+
 - Choose the Security Groups on left-hand menu
+
 - Click the `Create Security Group`.
 
 ```text
@@ -44,6 +54,7 @@ Tag:
 ## Part 2 - Create Target Group
 
 - Go to `Target Groups` section under the Load Balancing part on left-hand menu and select `Target Group`
+
 - Click `Create Target Group` button
 
   - Basic configuration
@@ -56,31 +67,34 @@ Tag:
     Protocol version        : HTTP1
     VPC                     : Default VPC
     ```
+
   - Health checks
 
     ```text
     Health check protocol   : HTTP
     Health check path       : /
     ```
+      - Advance health check settings
 
-    - Advance health check settings
+      ```text
+      Port                    : Traffic port
+      Healthy threshold       : 3
+      Unhealthy threshold     : 2
+      Timeout                 : 5 seconds
+      Interval                : 10 seconds
+      Success codes           : 200
+      ```
 
-    ```text
-    Port                    : Traffic port
-    Healthy threshold       : 3
-    Unhealthy threshold     : 2
-    Timeout                 : 5 seconds
-    Interval                : 10 seconds
-    Success codes           : 200
-    ```
   - Tags
 
     ```text
     Key                     : Name
     Value                   : MyTargetGroup
     ```
+
 - Click next >>>Register targets
-  *** Unlike Application Load Balancer hands-on, do not register any instances into the target group.
+   *** Unlike Application Load Balancer hands-on, do not register any instances into the target group.
+
 - Click `Create Target Group` button.
 
 ## Part 3 - Create Application Load Balancer
@@ -88,7 +102,9 @@ Tag:
 Go to the Load Balancing section on left-hand menu and select `Load Balancers`.
 
 - Click `Create Load Balancer` tab.
+
 - Select the `Application Load Balancer` option.
+
 - Basic configuration:
 
 ```text
@@ -99,7 +115,6 @@ IP address type : IPv4
 ```
 
 - Network mapping :
-
 ```text
 VPC             : default VPC
 Mappings        : Select all 6 AZ
@@ -112,15 +127,12 @@ ASGSecGroup
 ```
 
 - Listeners and routing:
-
 ```text
 Protocol                                :HTTP
 Port                                    :80
 Default action (select target group )   :MyTargetGroup
 ```
-
 - Tags  :
-
 ```text
     - Key   : Name
     - Value : MyALBforAutoScaling
@@ -131,13 +143,14 @@ Default action (select target group )   :MyTargetGroup
 ```text
 Successfully created load balancer!
 ```
-
 - Click `Close`.
+
 - Please wait for changing the state from `provisioning` to `active`.
 
 ## Part 4 - Create Launch Template
 
 - Select `Launch template` from the left-hand menu and then click `Create Launch template` to start.
+
 - Launch Template Name
 
 ```text
@@ -201,7 +214,7 @@ Keep it as it is
 
 - Advanced details:
 
-  In this section , we will just use `user data` settings. Please paste the script below into the `user data` field.
+   In this section , we will just use `user data` settings. Please paste the script below into the `user data` field.
 
 ```bash
 #!/bin/bash
@@ -265,7 +278,9 @@ Subnets     : Select all Subnets
 Step 3: Configure advanced options:
 
 - Check `Enable Load Balancing` and Select `Application Load Balancer or Network Load Balancer` option
+
 - Target Group: `MyTargetGroup`
+
 - Health Check
 
 ```text
@@ -311,15 +326,21 @@ Value:  : Autoscaling
 Step 7: Review and create Auto Scaling Group.
 
 - Right click the `Instance` tap on left hand menu and open in new window and show the sub-sections and also show there is 1 instance created by auto scaling group,
+
 - Right click the `Target Group` tap on left hand menu and open in new windows show the sub-sections and details. In Target Menu, show that the instance seems healthy based on rules that we set before.
+
 - Right click the `Load Balancing` tap on left hand menu and open in new window show the sub-sections and details.
+
 - Explain the sub-menu of ASG
+
 - Change the configuration of Autoscaling Group
 
 Step 1:
 
 - Go to Auto Scaling Groups and check the `ALBforAutoScaling` flag
+
 - Click `Edit` Tab
+
 - Change Values of Group Size
 
 ```text
@@ -327,24 +348,32 @@ Desired capacity    : 2
 Minimum capacity    : 2
 Maximum capacity    : 4
 ```
-
 - Explain Desired capacity, Minimum capacity and  Maximum capacity. Then show the capacity screen.
+
 - Keep the rest of settings as default
+
 - Click `Update`
 
 Step 2:
 
 - Show the changes in `instance number`, `activity tab` and `target group`.
+
 - Go to `Instance Tab` on left hand-menu and show instances created by auto scaling group.
+
 - Go to `Load Balancers` on the left-hand menu and copy Load Balancer DNS. Then paste it to browser, refresh the page and show the differences, like IP and dates.
 
 Step 3: Observe that Autoscaling keeps the target group in initial size.
 
 - Go to `Instance Tab` on left-hand menu and `STOP` one of the instances.
+
 - Go to `Target Group` on left-hand menu and click `MyTargetGroup`---> `Targets`.
+
 - Show the status of the stopped instance and refresh it. It probably takes a while to create a new instance by Auto Scaling.
+
 - Go to `Auto Scaling Groups` --> click `First-AS-Group` --> `Activity` and show the changes in the `Activity` history.
+
 - Click `Edit` Tab
+
 - Change Values of Group Size
 
 ```text
@@ -356,6 +385,7 @@ Maximum capacity    : 2
 ## Part 6 - Create Auto Scaling Policy
 
 - Go to `Auto Scaling Groups` --> click `First-AS-Group` --> `Automatic Scaling` --> `Add Policy`-----> `Create dynamic scaling policy`
+
 - Explain the Policy Types
 
 Step 1: Create `Add-Policy`;
@@ -366,8 +396,10 @@ Step 1: Create `Add-Policy`;
 Scaling Policy Name : First Scaling Policy-Add
 ```
 
-- Open  `Create a CloudWatch Alarm` in `new window`
+- Open  `Create a CloudWatch Alarm` in `new window` 
+
 - Select Metric ---> `EC2` --> By Auto Scaling Group --> type in filter  with typing `First-AS-Group` and select `First-AS-Group CPUUtilization`
+
 - Metric:
 
 ```text
@@ -376,7 +408,6 @@ AutoScalingGroupName  : First-AS-Group
 Statistic             : Average
 Period                : 1 minute
 ```
-
 - Conditions:
 
 ```text
@@ -388,8 +419,11 @@ Define the threshold value  :  60
 ```
 
 - Click `Next`
+
 - Just expliain notification, but for now , Click `Remove` tab at the top of the page and do not set any Notification, Autoscaling and EC2 Action
+
 - Click `Next`
+
 - Add name and description
 
 ```text
@@ -398,9 +432,13 @@ Alarm description - optional    : Auto Scaling-Add
 ```
 
 - Click `Next`, Review and Create alarm
+
 - Click `Create a CloudWatch alarm`
+
 - Go back to Autoscaling page and refresh the cloudwatch alarm
+
 - Select `Auto Scaling-Add` as Cloudwatch Alarm
+
 - Take the Action :
 
 ```text
@@ -413,6 +451,7 @@ An Then wait   : 200
 Step 2: Create `Remove-Policy`;
 
 - Go to `Auto Scaling Groups` --> click `First-AS-Group` --> `Automatic Scaling` -----> `Create dynamic scaling policy`
+
 - Explain the Policy Types
 
 Step 1: Create `Add-Policy`;
@@ -423,8 +462,10 @@ Step 1: Create `Add-Policy`;
 Scaling Policy Name : First Scaling Policy-Add
 ```
 
-- Open  `Create a CloudWatch Alarm` in `new window`
+- Open  `Create a CloudWatch Alarm` in `new window` 
+
 - Select Metric ---> `EC2` --> By Auto Scaling Group --> type in filter  with typing `First-AS-Group` and select `First-AS-Group CPUUtilization`
+
 - Metric:
 
 ```text
@@ -433,7 +474,6 @@ AutoScalingGroupName  : First-AS-Group
 Statistic             : Average
 Period                : 1 minute
 ```
-
 - Conditions:
 
 ```text
@@ -445,8 +485,11 @@ Define the threshold value  :  30
 ```
 
 - Click `Next`
+
 - Just expliain notification, but for now , Click `Remove` tab at the top of the page and do not set any Notification, Autoscaling and EC2 Action
+
 - Click `Next`
+
 - Add name and description
 
 ```text
@@ -455,9 +498,13 @@ Alarm description - optional    : Auto Scaling-remove
 ```
 
 - Click `Next`, Review and Create alarm
+
 - Click `Create a CloudWatch alarm`
+
 - Go back to Autoscaling page and refresh the cloudwatch alarm
+
 - Select `Auto Scaling-Add` as Cloudwatch Alarm
+
 - Take the Action :
 
 ```text
@@ -467,10 +514,13 @@ An Then wait   : 200
 
 - Click Create
 
+
 Step 3: Testing
 
 - Go to Instance Menu
+
 - Select one of the Auto Scaling Instance and connect with SSH
+
 - Upload `stress tool`
 
 ```bash
@@ -480,25 +530,32 @@ stress --cpu 80 --timeout 20000
 ```
 
 - Click the instance's Monitoring Tab and show the effect of `stress tool` on CPU Utilization
+
 - Show newly created instance based on `add-policy`
+
 - Go to instance terminal and stop `stress tool` with `CTRL-C`
+
 - Show the removed instance after `stress tool` stops based on `remove-policy`
+
 - Delete the Simple Policies
 
 Step 4: Add Step Scaling Policy
 
 - Go to `Auto Scaling Groups` --> click `First-AS-Group` --> --> `Automatic Scaling` -----> `Create dynamic scaling policy`
 
-  1. Create `Add-Policy`;
-- Select `Step Scaling` as Policy Type
-- Name :
 
+  1. Create `Add-Policy`;
+
+- Select `Step Scaling` as Policy Type
+
+- Name :
 ```text
 Step Policy Name : First Step Policy-Add- Do not test it just show how to configure it. 
 ```
 
 - Select `Auto Scaling-Add` as Cloudwatch Alarm
-- Take the Action :
+
+- Take the Action : 
 
 ```text
 Add --- 1 ---- Capacity Unit ----when 60---    <=    CPUUtilization 90
@@ -511,16 +568,17 @@ Add ----2 -----Capacity Unit ----when 90 ----  <= Infinity
 An Then wait   : 200
 ```
 
-2. Create `Remove-Policy`;
+  2. Create `Remove-Policy`;
 
 - Name :
-
 ```text
 Step Policy Name : First Step Policy-Add
 ```
 
 - Select `Step Scaling` as Policy Type
+
 - Select `Auto Scaling-Remove` as Cloudwatch Alarm
+
 - Take the Action :
 
 ```text
@@ -528,9 +586,14 @@ Remove --- 1 ---- Capacity Unit
 An Then wait   : 200
 ```
 
+
 - Delete the Step Polices
+
 - Step 5: Show target Tracking Policy
+
 - Go to `Auto Scaling Groups` --> click `First-AS-Group` --> `Automatic Scaling` -----> `Create dynamic scaling policy`
+
+
 - Click `Add-Policy`;
 
 Select `Policy Type : Target Tracking Policy`
@@ -540,9 +603,11 @@ Scaling Policy Name : First Target Tracking
 Target value        : 60
 Instances need      : 200 sec
 ```
-
 Use the stress tool on EC2 Instances
 
 - Stop the stress tool with CTRL + C
+
 - Delete the Target Tracking  Policy
+
 - Delete `Auto-scaling group` and `Load Balancer`
+
